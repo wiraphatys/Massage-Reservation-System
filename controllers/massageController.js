@@ -1,35 +1,35 @@
 const Massage = require('../models/MassageModel');
 
-// @desc    get all massages
-// @route   GET /api/v1/massages/
+// @desc    Get all massages
+// @route   GET /api/massages/
 // @access  Public
 exports.getMassages = async (req, res, next) => {
 
 }
 
-// @desc    get single massage
-// @route   GET /api/v1/massages/:id
+// @desc    Get single massage
+// @route   GET /api/massages/:id
 // @access  Public
 exports.getMassageByID = async (req, res, next) => {
 
 }
 
-// @desc    create a new massage
-// @route   POST /api/v1/massages/
+// @desc    Create a new massage
+// @route   POST /api/massages/
 // @access  Private
 exports.createMassage = async (req, res, next) => {
 
 }
 
-// @desc    update a massage by id
-// @route   PUT /api/v1/massages/:id
+// @desc    Update a massage by id
+// @route   PUT /api/massages/:id
 // @access  Private
 exports.updateMassage = async (req, res, next) => {
 
 }
 
-// @desc    delete a massage by id
-// @route   DELETE /api/v1/massages/:id
+// @desc    Delete a massage by id
+// @route   DELETE /api/massages/:id
 // @access  Private
 exports.deleteMassage = async (req, res, next) => {
 
