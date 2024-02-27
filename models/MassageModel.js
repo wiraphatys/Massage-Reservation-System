@@ -32,12 +32,23 @@ const MassageSchema = new mongoose.Schema({
     }
 });
 
-//reverse populate with virtual
+//Reverse populate with virtual
 MassageSchema.virtual('reservations', {
     ref: 'Reservation',
     localField: '_id',
     foreignField: 'massage',
     justOne: false
+});
+
+//Cascade delete reservations when a massage is deleted
+MassageSchema.pre('deleteOne', { document: true, query: false }, async function (next) {
+    try {
+        console.log(`Reservations being removed for massage ${this._id}`);
+        await this.model('Reservation').deleteMany({ massage: this._id });
+        next();
+    } catch (error) {
+        next(error);
+    }
 });
 
 module.exports = mongoose.model('Massage', MassageSchema);
