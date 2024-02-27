@@ -133,7 +133,7 @@ exports.updateReservation = async (req, res, next) => {
 
         if (!reservation) {
             return res.status(404).send({
-                success: true,
+                success: false,
                 message: `Not found reservation ID of ${req.params.id}`
             })
         }
