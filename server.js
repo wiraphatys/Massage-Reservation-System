@@ -12,9 +12,12 @@ const PORT = process.env.PORT || 3000;
 const MODE = process.env.NODE_ENV;
 
 // cookie-parser
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 app.use(cookieParser)
 
+// connectDB
+const connectDB = require('./config/db');
+connectDB();
 // router
 
 
