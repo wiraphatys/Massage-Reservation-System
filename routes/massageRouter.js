@@ -20,7 +20,7 @@ router.route("/")
     .post(protect, authorize("admin"), createMassage);
 
 router.route("/:id")
-    .get(protect, authorize("admin"), getMassageByID)
+    .get(getMassageByID)
     .put(protect, authorize("admin"), updateMassage)
     .delete(protect, authorize("admin"), deleteMassage);
 
