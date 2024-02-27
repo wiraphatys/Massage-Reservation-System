@@ -14,7 +14,7 @@ exports.getMassages = async (req, res, next) => {
 
     let queryStr = JSON.stringify(reqQuery);
     queryStr = queryStr.replace(/\b(lt|lte|gt|gte|in)\b/g, match => `$${match}`);
-    query = await Massage.find(JSON.parse(queryStr)).populate("reservations");
+    query = Massage.find(JSON.parse(queryStr)).populate("reservations");
 
     // Select
     if (req.query.select) {
@@ -68,7 +68,7 @@ exports.getMassages = async (req, res, next) => {
         })
     } catch (err) {
         console.log(err);
-        res.staus(500).send({
+        res.status(500).send({
             success: false,
             message: "Server Error"
         })
@@ -86,7 +86,7 @@ exports.getMassageByID = async (req, res, next) => {
         if (!massage) {
             return res.status(404).send({
                 success: false,
-                massage: `Not found massage ID of ${req.params.id}`
+                message: `Not found massage ID of ${req.params.id}`
             })
         }
 
@@ -195,16 +195,25 @@ exports.deleteMassage = async (req, res, next) => {
         // Execute deleting process
         await massage.deleteOne();
 
-        return req.status(200).send({
+        return res.status(200).send({
             success: true,
-            data: massage
+            data: {}
         })
 
     } catch (err) {
-        console.log(e.message);
+        console.log(err.message);
         return res.status(500).send({
             success: false,
             message: "Cannot delete massage"
         })
     }
 }
+
+// exports.test = async (req, res, next) => {
+//     const massages = await Massage.find({});
+//     res.status(200).send({
+//         success: true,
+//         data: massages
+//     })
+// }
+
