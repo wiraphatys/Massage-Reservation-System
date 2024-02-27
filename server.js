@@ -1,7 +1,7 @@
 // express
 const express = require('express');
 const app = express();
-app.use(express.json())     // body-parser
+app.use(express.json());     // body-parser
 
 // env
 const dotenv = require('dotenv');
@@ -13,20 +13,21 @@ const MODE = process.env.NODE_ENV;
 
 // cookie-parser
 const cookieParser = require('cookie-parser');
-app.use(cookieParser)
+app.use(cookieParser);
 
 // connectDB
 const connectDB = require('./config/db');
 connectDB();
 
 // router
-
-
+app.use("/api/massages", require("./routes/massageRouter"));
+app.use("/api/auth", require("./routes/authRouter"));
+app.use("/api/reservations", require("./routes/reservationRouter"));
 
 // listening
 const server = app.listen(PORT, () => {
     console.log(`This server running in ${MODE} mode on a port ${PORT}`)
-})
+});
 
 // handle error
 process.on('unhandledRejection', (err) => {
@@ -34,4 +35,4 @@ process.on('unhandledRejection', (err) => {
     server.close(() => {
         process.exit(1);
     })
-})
+});
