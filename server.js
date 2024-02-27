@@ -18,7 +18,9 @@ app.use(cookieParser)
 // connectDB
 const connectDB = require('./config/db');
 connectDB();
+
 // router
+
 
 
 // listening
