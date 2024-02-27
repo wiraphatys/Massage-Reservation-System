@@ -12,10 +12,6 @@ const MassageSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add an address']
     },
-    district: {
-        type: String,
-        required: [true, 'Please add a district']
-    },
     province: {
         type: String,
         required: [true, 'Please add a province']
@@ -23,6 +19,16 @@ const MassageSchema = new mongoose.Schema({
     tel: {
         type: String,
         required: [true, 'Please add a tel']
+    },
+    openTime: {
+        type: String,
+        required: [true, 'Please specify opening time'],
+        match: [/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Please add a valid opening time in HH:MM format']
+    },
+    closeTime: {
+        type: String,
+        required: [true, 'Please specify closing time'],
+        match: [/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Please add a valid closing time in HH:MM format']
     }
 });
 
