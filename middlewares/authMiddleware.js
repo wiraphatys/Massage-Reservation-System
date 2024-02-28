@@ -1,26 +1,29 @@
-//declare const
 const jwt = require('jsonwebtoken');
-const user = require('../models/UserModel');
+const User = require('../models/UserModel');
 
-//Protect routes
+
+//Create Function for protect routes
 exports.protect = async(req,res,next)=>{
     let token;
 
-    if(req.header,authorization && req.header.authorization.startWith('Bearer')){
-        token = req.header.authorization.split(' ')[1];
+    //checking header of request
+    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
+        token = req.headers.authorization.split(' ')[1];
     }
+    
 
-
-    //make sure token exist
+    //token existence ensuring
     if(!token){
         return res.status(401).json({success:false, message: 'Not authorize to access this route'});
     }
 
+
+
     try{
         //Verify Token
         const decoded = jwt.verify(token,process.env.JWT_SECRET);
-        console.log(decode);
-        req.user=await User.findById(decode.id);
+        console.log(decoded);
+        req.user=await User.findById(decoded.id);
         next();
     }
     catch(err){
@@ -29,8 +32,7 @@ exports.protect = async(req,res,next)=>{
     }
 }
 
-
-//Grant access to specific roles
+//Create function for granting access to specific roles
 exports.authorize=(...roles)=>{
         return(req,res,next)=>{
             if(!roles.includes(req.user.role)){
