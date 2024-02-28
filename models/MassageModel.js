@@ -30,6 +30,9 @@ const MassageSchema = new mongoose.Schema({
         required: [true, 'Please specify closing time'],
         match: [/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Please add a valid closing time in HH:MM format']
     }
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 });
 
 //Reverse populate with virtual
