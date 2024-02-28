@@ -11,12 +11,10 @@ exports.protect = async(req,res,next)=>{
         token = req.headers.authorization.split(' ')[1];
     }
     
-
     //token existence ensuring
     if(!token){
         return res.status(401).json({success:false, message: 'Not authorize to access this route'});
     }
-
 
 
     try{
@@ -31,6 +29,9 @@ exports.protect = async(req,res,next)=>{
         return res.status(401).json({success:false, message:'Not authorize to access this route'});
     }
 }
+
+
+
 
 //Create function for granting access to specific roles
 exports.authorize=(...roles)=>{
