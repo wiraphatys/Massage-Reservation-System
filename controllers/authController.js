@@ -67,7 +67,7 @@ exports.login = (async (req, res, next) => {
 
         // if user not found
         if (!user) {
-            res.status(400).send({
+            return res.status(400).send({
                 success: false,
                 msg: "Invalid credentials"
             })
