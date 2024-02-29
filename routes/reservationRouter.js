@@ -59,6 +59,42 @@ module.exports = router;
 
 /**
  * @swagger
+ * /massages/{massageId}/reservations:
+ *   get:
+ *     tags: [Reservations]
+ *     summary: Get reservations for a specific massage
+ *     description: Retrieve reservations associated with a specific massage.
+ *     parameters:
+ *       - in: path
+ *         name: massageId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the massage to retrieve reservations for.
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Reservation'
+ *       '401':
+ *         description: Unauthorized - User is not logged in
+ *       '500':
+ *         description: Internal server error - Unable to retrieve reservations
+ */
+
+/**
+ * @swagger
  * /reservations:
  *   get:
  *     summary: Get all reservations
