@@ -56,7 +56,7 @@ exports.login = (async (req, res, next) => {
 
         // validation email and password cannot be empty string
         if (!email || !password) {
-            res.status(400).send({
+            return res.status(400).send({
                 success: false,
                 msg: "Please provide an email and password."
             })
@@ -78,7 +78,7 @@ exports.login = (async (req, res, next) => {
 
         // if password is not match
         if (!isMatch) {
-            res.status(401).send({
+            return res.status(401).send({
                 success: false,
                 message: "Invalid credentials"
             })
@@ -114,7 +114,7 @@ exports.logout = (async (req, res, next) => {
         httpOnly: true
     })
 
-    res.status(200).send({
+    return res.status(200).send({
         success: true,
         data: {}
     })

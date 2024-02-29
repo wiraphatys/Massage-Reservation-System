@@ -43,6 +43,7 @@ app.use(cors()); // Enable CORS
 app.use('/api/massages', require("./routes/massageRouter"));
 app.use('/api/auth', require("./routes/authRouter"));
 app.use('/api/reservations', require("./routes/reservationRouter"));
+app.use('/api/users', require("./routes/userRouter"));
 
 // Start listening
 const server = app.listen(PORT, () => {

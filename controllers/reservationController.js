@@ -8,7 +8,7 @@ exports.getReservations = async (req, res, next) => {
     // Define empty query
     let query;
 
-    if (req.user.id === "admin") {
+    if (req.user.role === "admin") {
         if (req.params.massageId) {
             query = Reservation.find({ massage: req.params.massageId }).populate({
                 path: "massage",
@@ -52,6 +52,32 @@ exports.getReservationByID = async (req, res, next) => {
             path: "massage",
             select: "name address tel"
         });
+
+        if (req.user.role !== "admin") {
+            if (reservation && reservation.user.toString() !== req.user.id) {
+                return res.status(200).send({
+                    success: true,
+                    data: reservation
+                })
+            } else {
+                return res.status(401).send({
+                    success: false,
+                    message: `This user ${req.user.id} is not authorized to access this reservation`
+                })
+            }
+        } else {
+            if (!reservation) {
+                return res.status(404).send({
+                    success: false,
+                    message: `Not found reservation ID of ${req.params.id}`
+                })
+            }
+
+            res.status(200).send({
+                success: true,
+                data: reservation
+            })
+        }
 
         if (reservation.user.toString() !== req.user.id && req.user.role !== "admin") {
             return res.status(401).send({
@@ -131,34 +157,42 @@ exports.updateReservation = async (req, res, next) => {
     try {
         let reservation = await Reservation.findById(req.params.id);
 
-        if (!reservation) {
-            return res.status(404).send({
-                success: false,
-                message: `Not found reservation ID of ${req.params.id}`
+        if (req.user.role !== "admin") {
+            if (reservation && req.user.id === reservation.user.toString()) {
+                return res.status(200).send({
+                    success: true,
+                    data: reservation
+                })
+            } else {
+                return res.status(401).send({
+                    success: false,
+                    message: `This user ${req.user.id} is not authorized to update this reservation`
+                })
+            }
+        } else {
+            if (!reservation) {
+                return res.status(404).send({
+                    success: false,
+                    message: `Not found reservation ID of ${req.params.id}`
+                })
+            }
+
+            reservation = await Reservation.findByIdAndUpdate(req.params.id, req.body, {
+                new: true,
+                runValidators: true
             })
-        }
 
-        if (reservation.user.toString() !== req.user.id && req.user.role !== "admin") {
-            return res.status(401).send({
-                success: false,
-                message: `This user ${req.user.id} is not authorized to update this reservation`
+            res.status(200).send({
+                success: true,
+                data: reservation
             })
+            
         }
-
-        reservation = await Reservation.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true
-        })
-
-        res.status(200).send({
-            success: true,
-            data: reservation
-        })
 
     } catch (err) {
         console.log(err)
         return res.status(500).send({
-            success: true,
+            success: false,
             message: "Cannot update reservation"
         })
     }
