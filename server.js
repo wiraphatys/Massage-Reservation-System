@@ -29,6 +29,10 @@ connectDB();
 // Initialize express
 const app = express();
 
+// Swagger setup
+const swaggerSetup = require("./config/swagger");
+swaggerSetup(app);
+
 // Middleware
 app.use(express.json()); // For parsing application/json
 app.use(cookieParser()); // For parsing cookies
