@@ -45,19 +45,19 @@ The system is designed with a modular approach, separating concerns into differe
    ```
 4. Create a `.env` file in the root directory and populate it with your MongoDB URI and other environment variables as specified in `config/config.env`.
 5. Config setup
-```
-# default config
-PORT = 3000
-NODE_ENV = development
+    ```
+    # default config
+    PORT = 3000
+    NODE_ENV = development
 
-# database config
-MONGO_URI = your_mongodb_connection_string
+    # database config
+    MONGO_URI = your_mongodb_connection_string
 
-# JWT config
-JWT_SECRET = your_jwt_secret
-JWT_EXPIRE = 30d
-JWT_COOKIE_EXPIRE = 30
-```
+    # JWT config
+    JWT_SECRET = your_jwt_secret
+    JWT_EXPIRE = 30d
+    JWT_COOKIE_EXPIRE = 30
+    ```
 
 
 ### Running the Application
