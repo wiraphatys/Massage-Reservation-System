@@ -205,27 +205,33 @@ exports.deleteReservation = async (req, res, next) => {
     try {
         let reservation = await Reservation.findById(req.params.id);
 
-        if (!reservation) {
-            return res.status(404).send({
-                success: false,
-                message: `Not found reservation ID of ${req.params.id}`
+        if (req.user.role !== "admin") {
+            if (reservation && req.user.id === reservation.user.toString()) {
+                return res.status(200).send({
+                    success: true,
+                    data: reservation
+                })
+            } else {
+                return res.status(401).send({
+                    success: false,
+                    message: `This user ${req.user.id} is not authorized to delete this reservation`
+                })
+            }
+        } else {
+            if (!reservation) {
+                return res.status(404).send({
+                    success: false,
+                    message: `Not found reservation ID of ${req.params.id}`
+                })
+            }
+
+            await reservation.deleteOne();
+
+            res.status(200).send({
+                success: true,
+                data: {}
             })
         }
-
-        if (reservation.user.toString() !== req.user.id && req.user.role !== "admin") {
-            return res.status(401).send({
-                success: false,
-                message: `This user ${req.user.id} is not authorized to delete this reservation`
-            })
-        }
-
-        await reservation.deleteOne();
-
-        res.status(200).send({
-            success: true,
-            data: {}
-        })
-
     } catch (err) {
         console.log(err);
         return res.status(500).send({
