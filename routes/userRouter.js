@@ -16,7 +16,7 @@ const {
 router.route("/").get(protect, authorize("admin"), getUsers);
 
 router.route("/:id")
-    .get(protect, getUserByID)
+    .get(protect, authorize("admin"), getUserByID)
     .put(protect, updateUser)
     .delete(protect, deleteUser);
 
