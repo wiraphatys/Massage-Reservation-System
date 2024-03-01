@@ -73,30 +73,11 @@ exports.getReservationByID = async (req, res, next) => {
                 })
             }
 
-            res.status(200).send({
+            return res.status(200).send({
                 success: true,
                 data: reservation
             })
         }
-
-        if (reservation.user.toString() !== req.user.id && req.user.role !== "admin") {
-            return res.status(401).send({
-                success: false,
-                message: `This user ID of ${req.user.id} is not authorized to access this reservation`
-            })
-        }
-
-        if (!reservation) {
-            return res.status(404).send({
-                success: false,
-                message: `Not found reservation ID of ${req.params.id}`
-            })
-        }
-
-        res.status(200).send({
-            success: true,
-            data: reservation
-        })
 
     } catch (err) {
         console.log(err.stack)
@@ -136,7 +117,7 @@ exports.createReservation = async (req, res, next) => {
         }
 
         const reservation = await Reservation.create(req.body);
-        res.status(201).send({
+        return res.status(201).send({
             success: true,
             data: reservation
         })
@@ -182,7 +163,7 @@ exports.updateReservation = async (req, res, next) => {
                 runValidators: true
             })
 
-            res.status(200).send({
+            return res.status(200).send({
                 success: true,
                 data: reservation
             })
@@ -227,7 +208,7 @@ exports.deleteReservation = async (req, res, next) => {
 
             await reservation.deleteOne();
 
-            res.status(200).send({
+            return res.status(200).send({
                 success: true,
                 data: {}
             })
