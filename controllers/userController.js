@@ -33,13 +33,6 @@ exports.getUserByID = async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id);
 
-        if (user._id.toString() !== req.user.id && req.user.role !== "admin") {
-            return res.status(401).send({
-                success: false,
-                message: `This user ID of ${req.user.id} is not authorized to access this user`
-            })
-        }
-
         if (!user) {
             return res.status(404).send({
                 success: false,
