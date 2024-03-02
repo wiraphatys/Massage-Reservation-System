@@ -98,18 +98,26 @@ exports.login = (async (req, res, next) => {
 // @route   GET /api/v1/auth/me
 // @access  Private
 exports.getMe = (async (req, res, next) => {
-    const user = await User.findById(req.user.id)
-    res.status(200).send({
-        success: true,
-        data: user
-    })
+    try {
+        const user = await User.findById(req.user.id)
+        return res.status(200).send({
+            success: true,
+            data: user
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({
+            success: false,
+            message: err.message
+        })
+    }
 })
 
 // @desc    Logout user
 // @route   GET /api/v1/auth/logout
 // @access  Public
 exports.logout = (async (req, res, next) => {
-    res.cookie('cookie', 'none', {
+    res.cookie('token', 'none', {
         expires: new Date(Date.now() + 10 * 1000),
         httpOnly: true
     })
