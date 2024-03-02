@@ -140,6 +140,10 @@ exports.updateReservation = async (req, res, next) => {
 
         if (req.user.role !== "admin") {
             if (reservation && req.user.id === reservation.user.toString()) {
+                reservation = await Reservation.findByIdAndUpdate(req.params.id, req.body, {
+                    new: true,
+                    runValidators: true
+                })
                 return res.status(200).send({
                     success: true,
                     data: reservation
@@ -188,6 +192,7 @@ exports.deleteReservation = async (req, res, next) => {
 
         if (req.user.role !== "admin") {
             if (reservation && req.user.id === reservation.user.toString()) {
+                await reservation.deleteOne();
                 return res.status(200).send({
                     success: true,
                     data: reservation
