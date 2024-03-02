@@ -54,7 +54,7 @@ exports.getReservationByID = async (req, res, next) => {
         });
 
         if (req.user.role !== "admin") {
-            if (reservation && reservation.user.toString() !== req.user.id) {
+            if (reservation && reservation.user.toString() === req.user.id) {
                 return res.status(200).send({
                     success: true,
                     data: reservation
