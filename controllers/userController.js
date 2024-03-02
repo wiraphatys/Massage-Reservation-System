@@ -61,30 +61,43 @@ exports.updateUser = async (req, res, next) => {
     try {
         let user = await User.findById(req.params.id);
 
-        if (user._id.toString() !== req.user.id && req.user.role !== "admin") {
-            return res.status(401).send({
-                success: false,
-                message: `This user ID of ${req.user.id} is not authorized to update this user`
+        if (req.user.role !== "admin") {
+            if (user && req.user.id === user._id.toString()) {
+                user.set(req.body);
+                await user.save();
+
+                user = user.toObject();
+                delete user.password;
+
+                return res.status(200).send({
+                    success: true,
+                    data: user
+                })
+            } else {
+                return res.status(401).send({
+                    success: false,
+                    message: `This user ID of ${req.params.id} not authorized to update this user`
+                })
+            }
+        } else {
+            if (!user) {
+                return res.status(404).send({
+                    success: false,
+                    message: `Not found user ID of ${req.params.id}`
+                })
+            }
+
+            user.set(req.body);
+            await user.save();
+
+            user = user.toObject();
+            delete user.password;
+
+            return res.status(200).send({
+                success: true,
+                data: user
             })
         }
-
-        if (!user) {
-            return res.status(404).send({
-                success: false,
-                message: `Not found user ID of ${req.params.id}`
-            })
-        }
-        
-        user.set(req.body); 
-        await user.save();
-
-        user = user.toObject();
-        delete user.password;
-
-        res.status(200).send({
-            success: true,
-            data: user
-        })
 
     } catch (err) {
         console.log(err.message);
@@ -106,34 +119,41 @@ exports.updateUser = async (req, res, next) => {
     }
 }
 
-// @desc    Update user
-// @route   PUT /api/users/:id
+// @desc    Delete user
+// @route   DELETE /api/users/:id
 // @access  Private
 exports.deleteUser = async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id);
 
-        if (user._id.toString() !== req.user.id && req.user.role !== "admin") {
-            return res.status(401).send({
-                success: false,
-                message: `This user ${req.user.id} is not authorized to delete this user`
+        if (req.user.role !== "admin") {
+            if (user && req.user.id === user._id.toString()) {
+                await user.deleteOne();
+                return res.status(200).send({
+                    success: true,
+                    data: {}
+                })
+            } else {
+                return res.status(401).send({
+                    success: false,
+                    message: `This user ID of ${req.user.id} is not authorized to delete this user`
+                })
+            }
+        } else {
+            if (!user) {
+                return res.status(404).send({
+                    success: false,
+                    message: `Not found user ID of ${req.params.id}`
+                })
+            }
+
+            await user.deleteOne();
+
+            return res.status(200).send({
+                success: true,
+                data: {}
             })
         }
-
-        if (!user) {
-            return res.status(404).send({
-                success: false,
-                message: `Not found user ID of ${req.params.id}`
-            })
-        }
-
-        await user.deleteOne();
-
-        res.status(200).send({
-            success: true,
-            data: {}
-        })
-
     } catch (err) {
         console.log(err.message);
         res.status(500).send({

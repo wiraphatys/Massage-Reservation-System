@@ -195,7 +195,7 @@ exports.deleteReservation = async (req, res, next) => {
                 await reservation.deleteOne();
                 return res.status(200).send({
                     success: true,
-                    data: reservation
+                    data: {}
                 })
             } else {
                 return res.status(401).send({
